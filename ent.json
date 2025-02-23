@@ -1,0 +1,484 @@
+{
+    "questions": [
+        {
+            "question": "An entrepreneur is primarily defined as:",
+            "options": [
+                "Someone who works for a large corporation",
+                "A person who sets up a business and takes financial risks",
+                "An investor who provides funding for startups",
+                "A government official who regulates businesses"
+            ],
+            "correct_answer": "A person who sets up a business and takes financial risks"
+        },
+        {
+            "question": "Entrepreneurship involves:",
+            "options": [
+                "Only the ability to make a profit",
+                "Working for an existing company",
+                "The ability to develop, organize, and run a business with its uncertainties",
+                "Investing money in a business without active involvement"
+            ],
+            "correct_answer": "The ability to develop, organize, and run a business with its uncertainties"
+        },
+        {
+            "question": "Creating value in entrepreneurship involves:",
+            "options": [
+                "Simply making a profit",
+                "Implementing an idea that has no impact",
+                "Implementing an idea that makes an economic or social difference",
+                "Avoiding risks in business"
+            ],
+            "correct_answer": "Implementing an idea that makes an economic or social difference"
+        },
+        {
+            "question": "Innovation refers to:",
+            "options": [
+                "The process of copying existing products or services",
+                "The ability to make a profit",
+                "Translating ideas into valuable new products, processes, or services",
+                "The ability to manage a business effectively"
+            ],
+            "correct_answer": "Translating ideas into valuable new products, processes, or services"
+        },
+        {
+            "question": "Incremental innovation involves:",
+            "options": [
+                "Making small improvements to existing products, services, or processes",
+                "Creating entirely new products or services",
+                "Disrupting existing markets",
+                "Avoiding risks in business"
+            ],
+            "correct_answer": "Making small improvements to existing products, services, or processes"
+        },
+        {
+            "question": "Benchmarking is a process used to:",
+            "options": [
+                "Assess a company's financial performance",
+                "Identify and learn from best practices in the industry",
+                "Develop new products and services",
+                "Measure employee satisfaction"
+            ],
+            "correct_answer": "Identify and learn from best practices in the industry"
+        },
+        {
+            "question": "Absorptive capacity refers to:",
+            "options": [
+                "The ability of an organization to use existing knowledge effectively",
+                "The ability to measure employee satisfaction",
+                "The process of developing new products and services",
+                "An organization's ability to implement and use new knowledge from outside"
+            ],
+            "correct_answer": "An organization's ability to implement and use new knowledge from outside"
+        },
+        {
+            "question": "Explicit knowledge is:",
+            "options": [
+                "Personal and difficult to articulate",
+                "Codified and easily communicated",
+                "Context-specific and experiential",
+                "Tacit and implicit"
+            ],
+            "correct_answer": "Codified and easily communicated"
+        },
+        {
+            "question": "An innovation strategy is:",
+            "options": [
+                "A statement of how innovation will take the business forward and why",
+                "A plan for reducing costs in a business",
+                "A marketing plan for a new product",
+                "A financial plan for a business"
+            ],
+            "correct_answer": "A statement of how innovation will take the business forward and why"
+        },
+        {
+            "question": "Exploit innovation involves:",
+            "options": [
+                "Making radical changes to existing products or services",
+                "Exploring new markets and industries",
+                "Making incremental improvements to existing products or services",
+                "Avoiding risks in business"
+            ],
+            "correct_answer": "Making incremental improvements to existing products or services"
+        },
+        {
+            "question": "Explore innovation involves:",
+            "options": [
+                "Making incremental improvements to existing products or services",
+                "Exploring new markets and industries",
+                "Following established trajectories",
+                "Avoiding risks in business"
+            ],
+            "correct_answer": "Exploring new markets and industries"
+        },
+        {
+            "question": "What is consistently found to be the most important characteristic associated with business success?",
+            "options": [
+                "Innovation",
+                "Marketing",
+                "Leadership",
+                "Financial management"
+            ],
+            "correct_answer": "Innovation"
+        },
+        {
+            "question": "What is the core of entrepreneurship?",
+            "options": [
+                "Financial planning",
+                "Risk management",
+                "Innovation",
+                "Sales and marketing"
+            ],
+            "correct_answer": "Innovation"
+        },
+        {
+            "question": "What is the primary difference between commercial and social entrepreneurship?",
+            "options": [
+                "Profit motive",
+                "Target market",
+                "Legal structure",
+                "Industry focus"
+            ],
+            "correct_answer": "Profit motive"
+        },
+        {
+            "question": "In which stage of the organizational life cycle is innovation primarily focused on exploring new opportunities?",
+            "options": [
+                "Start-up",
+                "Growth",
+                "Sustain/scale",
+                "Renew"
+            ],
+            "correct_answer": "Start-up"
+        },
+        {
+            "question": "What is the first step in the innovation process?",
+            "options": [
+                "Developing the idea",
+                "Capturing value",
+                "Recognizing the opportunity",
+                "Finding the resources"
+            ],
+            "correct_answer": "Recognizing the opportunity"
+        },
+        {
+            "question": "What is the primary purpose of creating a robust business plan for an innovation?",
+            "options": [
+                "Attracting investors",
+                "Developing a marketing strategy",
+                "Achieving entrepreneurial success",
+                "Conducting market research"
+            ],
+            "correct_answer": "Achieving entrepreneurial success"
+        },
+        {
+            "question": "What is the term for changes in the underlying mental models that frame what an organization does?",
+            "options": [
+                "Product innovation",
+                "Process innovation",
+                "Position innovation",
+                "Paradigm innovation"
+            ],
+            "correct_answer": "Paradigm innovation"
+        },
+        {
+            "question": "What is the key to becoming a successful innovator?",
+            "options": [
+                "Having a strong financial backing",
+                "Hiring a talented team",
+                "Understanding different dimensions of innovation",
+                "Focusing solely on product development"
+            ],
+            "correct_answer": "Understanding different dimensions of innovation"
+        },
+        {
+            "question": "Which of the following is NOT a key dimension of innovation?",
+            "options": [
+                "Product",
+                "Process",
+                "Position",
+                "Profit"
+            ],
+            "correct_answer": "Profit"
+        },
+        {
+            "question": "What is the second step in the innovation process?",
+            "options": [
+                "Recognizing the opportunity",
+                "Finding the resources",
+                "Developing the idea",
+                "Capturing value"
+            ],
+            "correct_answer": "Finding the resources"
+        },
+        {
+            "question": "What is the most important factor for successful innovation?",
+            "options": [
+                "Technological advancements",
+                "Financial resources",
+                "Strong leadership team",
+                "Culture of innovation"
+            ],
+            "correct_answer": "Strong leadership team"
+        },
+        {
+            "question": "What are the two main types of entrepreneurship?",
+            "options": [
+                "Commercial and social",
+                "For-profit and non-profit",
+                "Small business and large business",
+                "Domestic and international"
+            ],
+            "correct_answer": "Commercial and social"
+        },
+        {
+            "question": "Which of the following is NOT a benefit of innovation for companies?",
+            "options": [
+                "Increased market share",
+                "Higher profitability",
+                "Reduced costs",
+                "Decreased employee morale"
+            ],
+            "correct_answer": "Decreased employee morale"
+        },
+        {
+            "question": "Which of the following qualities is NOT typically associated with successful entrepreneurs?",
+            "options": [
+                "Ambitious",
+                "Mission-driven",
+                "Impulsive",
+                "Results-oriented"
+            ],
+            "correct_answer": "Impulsive"
+        },
+        {
+            "question": "Social entrepreneurs primarily seek to generate:",
+            "options": [
+                "Economic value for stakeholders",
+                "Social value for society",
+                "Both economic and social value",
+                "Profit"
+            ],
+            "correct_answer": "Social value for society"
+        },
+        {
+            "question": "Which of the following is NOT a key characteristic of social entrepreneurs?",
+            "options": [
+                "Ambition",
+                "Profit-driven focus",
+                "Mission-driven focus",
+                "Results-oriented approach"
+            ],
+            "correct_answer": "Profit-driven focus"
+        },
+        {
+            "question": "The primary motivation for social entrepreneurs is:",
+            "options": [
+                "Profit maximization",
+                "Personal gain",
+                "Creating social value",
+                "Avoiding risk"
+            ],
+            "correct_answer": "Creating social value"
+        },
+        {
+            "question": "Social entrepreneurs typically focus on:",
+            "options": [
+                "Short-term profits",
+                "Avoiding change",
+                "Maintaining the status quo",
+                "Addressing social problems"
+            ],
+            "correct_answer": "Addressing social problems"
+        },
+        {
+            "question": "Which of the following is NOT a common characteristic of social entrepreneurs?",
+            "options": [
+                "Passion",
+                "Strategic thinking",
+                "Impulsiveness",
+                "Results-orientation"
+            ],
+            "correct_answer": "Impulsiveness"
+        },
+        {
+            "question": "The process of creating social innovation begins with:",
+            "options": [
+                "Building prototypes",
+                "Making the case",
+                "Observations, inspirations, and diagnoses",
+                "Scaling and diffusion"
+            ],
+            "correct_answer": "Observations, inspirations, and diagnoses"
+        },
+        {
+            "question": "In the second stage of creating social innovation, it's important to:",
+            "options": [
+                "Generate proposals and ideas",
+                "Conduct market research",
+                "Implement the innovation",
+                "Evaluate the impact"
+            ],
+            "correct_answer": "Generate proposals and ideas"
+        },
+        {
+            "question": "The third stage of creating social innovation involves:",
+            "options": [
+                "Making the case",
+                "Building prototypes and pilots",
+                "Scaling and diffusion",
+                "Identifying the need for innovation"
+            ],
+            "correct_answer": "Building prototypes and pilots"
+        },
+        {
+            "question": "In the fourth stage of creating social innovation, it's crucial to:",
+            "options": [
+                "Focus solely on financial returns",
+                "Ignore feedback and criticism",
+                "Gather strong evidence to support the innovation",
+                "Maintain the status quo"
+            ],
+            "correct_answer": "Gather strong evidence to support the innovation"
+        },
+        {
+            "question": "The sixth stage of creating social innovation is:",
+            "options": [
+                "Building prototypes",
+                "Making the case",
+                "Identifying the need for innovation",
+                "Scaling and diffusion"
+            ],
+            "correct_answer": "Scaling and diffusion"
+        },
+        {
+            "question": "Why do organizations need social entrepreneurship?",
+            "options": [
+                "To increase profits",
+                "To avoid paying taxes",
+                "To secure a \"license to operate\"",
+                "To reduce employee morale"
+            ],
+            "correct_answer": "To secure a \"license to operate\""
+        },
+        {
+            "question": "One of the key challenges faced by social entrepreneurs is:",
+            "options": [
+                "Abundant resources",
+                "Limited funding and support",
+                "Lack of conflicting goals",
+                "Strong alignment between social needs and revenue generation"
+            ],
+            "correct_answer": "Limited funding and support"
+        },
+        {
+            "question": "Creativity is:",
+            "options": [
+                "The ability to follow rules and procedures",
+                "The ability to produce work that is both novel and useful",
+                "The ability to copy existing ideas",
+                "The ability to avoid taking risks"
+            ],
+            "correct_answer": "The ability to produce work that is both novel and useful"
+        },
+        {
+            "question": "Creative ideas are important for:",
+            "options": [
+                "Maintaining the status quo",
+                "Produce work",
+                "Reducing efficiency",
+                "Fostering innovation"
+            ],
+            "correct_answer": "Fostering innovation"
+        },
+        {
+            "question": "Divergent thinking is associated with:",
+            "options": [
+                "Focusing on a single solution",
+                "Following strict rules",
+                "Generating multiple ideas",
+                "Avoiding creativity"
+            ],
+            "correct_answer": "Generating multiple ideas"
+        },
+        {
+            "question": "Convergent thinking can help to:",
+            "options": [
+                "Evaluate and select the best solution",
+                "Generate new ideas",
+                "Avoid critical thinking",
+                "Maintaining the status quo"
+            ],
+            "correct_answer": "Evaluate and select the best solution"
+        },
+        {
+            "question": "To foster creativity, it is important to:",
+            "options": [
+                "Follow strict rules and procedures",
+                "Avoid collaboration",
+                "Encourage divergent thinking",
+                "Limit idea generation"
+            ],
+            "correct_answer": "Encourage divergent thinking"
+        },
+        {
+            "question": "The ability to think differently involves:",
+            "options": [
+                "Following established routines",
+                "Challenging assumptions",
+                "Avoiding new perspectives",
+                "Avoid collaboration"
+            ],
+            "correct_answer": "Challenging assumptions"
+        },
+        {
+            "question": "The first stage of the creative process involves:",
+            "options": [
+                "Incubation",
+                "Insight",
+                "Recognizing a problem",
+                "Validation and refinement"
+            ],
+            "correct_answer": "Recognizing a problem"
+        },
+        {
+            "question": "The incubation stage of the creative process involves:",
+            "options": [
+                "Generating new ideas",
+                "Unconscious processing of information",
+                "Evaluating the final idea",
+                "Implementing the solution"
+            ],
+            "correct_answer": "Unconscious processing of information"
+        },
+        {
+            "question": "The insight stage of the creative process is when:",
+            "options": [
+                "The final idea becomes clear",
+                "The problem is first identified",
+                "The idea is refined and improved",
+                "The solution is implemented"
+            ],
+            "correct_answer": "The final idea becomes clear"
+        },
+        {
+            "question": "The validation and refinement stage of the creative process involves:",
+            "options": [
+                "Evaluating the final idea",
+                "Generating new ideas",
+                "Recognizing the problem",
+                "Incubating ideas"
+            ],
+            "correct_answer": "Evaluating the final idea"
+        },
+        {
+            "question": "The creative process is:",
+            "options": [
+                "Iterative and non-linear",
+                "Independent of individual differences",
+                "Always quick and easy",
+                "Linear and sequential"
+            ],
+            "correct_answer": "Linear and sequential"
+        }
+	]
+}

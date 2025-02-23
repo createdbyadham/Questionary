@@ -1,0 +1,249 @@
+{
+    "questions": [
+        {
+            "question": "The process of generating an output prediction occurs only after all time steps have been processed.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "Which of the following filters is used to enhance edges in an image?",
+            "options": ["Sharpen", "Edge Detection", "Emboss", "Blur"],
+            "correct_answer": "Sharpen"
+        },
+        {
+            "question": "Hyperparameters in CNNs, such as the number of filters and filter sizes, significantly impact the network’s performance and learning ability.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "The ReLU activation function can be considered a separate step from the convolution process, as it does not directly influence the feature extraction.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "How is the hidden state updated in an RNN?",
+            "options": [
+                "By resetting it to zero at each time step",
+                "By using a random value",
+                "By combining the current input and the previous hidden state",
+                "By using only the current input"
+            ],
+            "correct_answer": "By combining the current input and the previous hidden state"
+        },
+        {
+            "question": "Future directions in deep learning include enabling models to learn from new data without forgetting previous knowledge.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "The activation function used in RNNs can be a nonlinear function such as tanh.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "In a neural network, what does the term 'epochs' refer to?",
+            "options": [
+                "The number of pooling operations performed",
+                "The number of layers in the network",
+                "The number of times data passes through the network",
+                "The number of neurons in the output layer"
+            ],
+            "correct_answer": "The number of times data passes through the network"
+        },
+        {
+            "question": "The stride in a convolution operation can be adjusted to optimize the processing speed and size of the resulting feature map.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "If a CNN is trained exclusively on images of cats, it will be able to accurately classify images of dogs without any additional training.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "The state update formula in RNNs incorporates both the current input and the previous hidden state.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "Deep learning is a subset of machine learning that utilizes neural networks to learn from data.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "Create a plan for addressing the challenge of underfitting in a deep learning model. What steps would you take?",
+            "options": [
+                "Reduce the amount of training data to focus on quality.",
+                "Limit the number of epochs during training.",
+                "Simplify the model further to avoid complexity.",
+                "Increase the model's complexity by adding more layers or neurons."
+            ],
+            "correct_answer": "Increase the model's complexity by adding more layers or neurons."
+        },
+        {
+            "question": "How does the interactive visualization tool by Adam Harley help users?",
+            "options": [
+                "It allows users to draw digits and observe convolution and pooling operations",
+                "It generates random images for testing",
+                "It simplifies the loss function calculations",
+                "It replaces the need for convolutional layers"
+            ],
+            "correct_answer": "It allows users to draw digits and observe convolution and pooling operations"
+        },
+        {
+            "question": "Deep learning models typically require small amounts of low-quality data to train effectively.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "RNNs are particularly effective for handling sequential data due to their ability to maintain a hidden state.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "What is a key limitation of traditional feedforward neural networks when dealing with sequential data?",
+            "options": [
+                "They require more computational power",
+                "They do not capture time dependencies",
+                "They can only process images",
+                "They are only suitable for binary classification"
+            ],
+            "correct_answer": "They do not capture time dependencies"
+        },
+        {
+            "question": "RNNs can be visualized as being unrolled over time to show how the hidden state is propagated.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "Which activation function is commonly used in RNNs?",
+            "options": ["linear", "tanh", "softmax", "sigmoid"],
+            "correct_answer": "tanh"
+        },
+        {
+            "question": "A neural network trained with max pooling will struggle to recognize features that appear in different locations or orientations within an image.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "The ReLU activation function is unnecessary in deep learning because linear outputs are sufficient for capturing the complexities of image data.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "Deep learning has no significant applications in the finance sector, such as fraud detection or algorithmic trading.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "The application of non-linear activation functions like ReLU is critical in deep learning because it allows the model to capture the inherent complexities of the data more effectively than linear functions.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "The pooling layer can be used interchangeably with convolution layers, as both serve the same purpose in feature extraction.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "In RNNs, what do the weights W_x and W_h represent?",
+            "options": [
+                "The weights for the current input and previous hidden state",
+                "The biases of the network",
+                "The final output weights",
+                "The learning rate of the model"
+            ],
+            "correct_answer": "The weights for the current input and previous hidden state"
+        },
+        {
+            "question": "The primary purpose of pooling in CNNs is to increase the spatial dimensions of feature maps, which improves computational efficiency.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "Convolutional Neural Networks (CNNs) can only classify images with high clarity and cannot process blurry images at all.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "The process of max pooling in CNNs is primarily used to enhance the resolution of images before classification.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "The primary purpose of using a feature detector in convolution is to preserve all the original data from the input image without any loss.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "The convolution step in CNNs is analogous to how humans focus on specific features of an image to categorize it.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "The elimination of negative values through ReLU can be seen as a method to simplify the data representation, making it easier for the network to learn complex patterns.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "RNNs are incapable of capturing dependencies in time-sequenced data.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "Applying multiple filters to an image during convolution will result in a single feature map that contains all detected features combined.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "What is the result of applying a pooling operation with a 2x2 window on a feature map?",
+            "options": [
+                "It converts all values to a single average",
+                "It doubles the size of the feature map",
+                "It selects the maximum value from each window and reduces the feature map size",
+                "It retains all pixel values without change"
+            ],
+            "correct_answer": "It selects the maximum value from each window and reduces the feature map size"
+        },
+        {
+            "question": "Sequence-to-sequence problems involve transforming an input sequence into a different output sequence.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "Create a plan for implementing federated learning in a healthcare application. What is a critical step?",
+            "options": [
+                "Ignoring data privacy regulations to speed up the process.",
+                "Ensuring that all participating devices can communicate securely.",
+                "Centralizing all patient data for analysis.",
+                "Using only synthetic data for training."
+            ],
+            "correct_answer": "Ensuring that all participating devices can communicate securely."
+        },
+        {
+            "question": "A sequence modeling problem involves predicting future data points without considering previous data points.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        },
+        {
+            "question": "Analyze the potential ethical implications of using deep learning in facial recognition technology. What is a significant concern?",
+            "options": [
+                "Enhanced security measures for public safety.",
+                "Increased accuracy in identifying individuals.",
+                "Improved efficiency in law enforcement operations.",
+                "Potential biases in the training data leading to unfair outcomes."
+            ],
+            "correct_answer": "Potential biases in the training data leading to unfair outcomes."
+        },
+        {
+            "question": "The receptive field in a CNN refers to the specific region of the input that each neuron in a layer is influenced by.",
+            "options": ["True", "False"],
+            "correct_answer": "True"
+        },
+        {
+            "question": "The concept of pooling in deep learning is unrelated to convolution and does not contribute to the feature extraction process.",
+            "options": ["True", "False"],
+            "correct_answer": "False"
+        }
+    ]
+}

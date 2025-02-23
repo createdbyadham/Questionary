@@ -1,0 +1,154 @@
+{
+  "questions": [
+    {
+      "question": "If prices are falling, nominal GDP may decline even if the economy is growing.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Real GDP is the total value of goods and services produced by an economy in 1 year measured at current prices.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "One of the largest earthquakes ever recorded in North America occurred around New Madrid Missouri in 1812.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Pathogenic organisms are those that are susceptible to diseases.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "A factor responsible for the fast spread of emergent diseases is high population density.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Marine reserves are more common and easier to manage than terrestrial reserves.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "The loss of forests can affect rainfall patterns.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "In general, species diversity is higher near the poles than near the equator.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "The most common reason that introduced species cause trouble is because they are larger than native species.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "Water expands when it crystallizes and freezes.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Nitrogen is an essential component of amino acids and proteins.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "A single PVC bottle in a truckload of PET plastic could make the PET useless for recycling.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "The world's largest wind power producers are the United States and Canada.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "Sustainable development differs from traditional economic development in that it emphasizes economic development in the short term.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "Application of fertilizer to farm fields is an example of cultural eutrophication.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Is the sustainability of cities one of the goals of sustainable development?",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Is sustainable development not interested in innovation?",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "Concern for providing clean water for the community is one of the goals of sustainable development?",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "The technological dimension is one of the dimensions of sustainable development.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Sustainable development is concerned with the needs of present and future generations.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Sustainable development is concerned with the needs of current generations only?",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "The social dimension is not considered one of the dimensions of sustainable development.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "The economic dimension is one of the dimensions of sustainable development.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "The dimensions of sustainable development do not include the environmental dimension.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "Paying attention to the quality of education is one of the goals of sustainable development.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Professional regulators (e.g., EPA) and the public do not always have the same perception of risk of different environmental hazards.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Risk, Economics, and Environmental Concerns:",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "The concept of sustainable development refers to a balance between protection and maintenance of ecological systems, while increasing the standard of living for the average person, such that the ability of future generations to meet their own needs is not compromised.",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    },
+    {
+      "question": "Domestic water conservation in the United States would save about 20% of the water we now use. Therefore, we need to come up with better technology to avoid strict restrictions in the future.",
+      "options": ["True", "False"],
+      "correct_answer": "False"
+    },
+    {
+      "question": "The largest oil supply in the Americas comes from tar sands:",
+      "options": ["True", "False"],
+      "correct_answer": "True"
+    }
+  ]
+}

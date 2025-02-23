@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            background-color: #242424;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-card {
+            background-color: #2d2d2d;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: 1px solid #3d3d3d;
+        }
+
+        .option-label {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #3d3d3d;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #333333;
+            transition: all 0.3s ease;
+        }
+
+        .option-label:hover {
+            background-color: #404040;
+        }
+
+        .option-label.disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .option-label.disabled input {
+            pointer-events: none;
+        }
+
+        .option-label.correct-answer {
+            background-color: #1b4d1b;
+            border-color: #2d662d;
+            color: #98ff98;
+        }
+
+        .option-label.wrong-answer {
+            background-color: #4d1b1b;
+            border-color: #662d2d;
+            color: #ff9898;
+        }
+
+        .feedback-text {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #uploadSection, #quizSection, #resultsSection, #reviewSection {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .btn-primary {
+            background-color: #4a4a8c;
+            border-color: #5d5d99;
+        }
+
+        .btn-primary:hover {
+            background-color: #5d5d99;
+            border-color: #6e6ea6;
+        }
+
+        .btn-success {
+            background-color: #2d662d;
+            border-color: #377337;
+        }
+
+        .btn-success:hover {
+            background-color: #377337;
+            border-color: #408040;
+        }
+
+        .form-control {
+            background-color: #333333;
+            border-color: #3d3d3d;
+            color: #e0e0e0;
+        }
+
+        .form-control:focus {
+            background-color: #404040;
+            border-color: #4a4a8c;
+            color: #e0e0e0;
+            box-shadow: 0 0 0 0.25rem rgba(74, 74, 140, 0.25);
+        }
+
+        .alert-info {
+            background-color: #2d2d4d;
+            border-color: #3d3d66;
+            color: #b8b8e6;
+        }
+
+        h2, h4, h5 {
+            color: #b8b8e6;
+        }
+
+        input[type="radio"] {
+            accent-color: #4a4a8c;
+        }
+        
+        .form-label {
+            color: #b8b8e6;
+        }
+
+        .progress-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress {
+            height: 25px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            line-height: 25px;
+            transition: width 0.3s ease;
+        }
+
+        #statusText {
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .answer-details {
+            padding: 10px;
+            background-color: #333333;
+            border: 1px solid #3d3d3d;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div id="uploadSection">
+            <h2 class="mb-4">MCQ Question Sets</h2>
+            <div class="mb-3">
+                <label for="questionFile" class="form-label">Upload PDF File</label>
+                <input type="file" class="form-control" id="questionFile" accept=".pdf">
+            </div>
+            <div class="mb-3">
+                <label for="setName" class="form-label">Set Name (optional)</label>
+                <input type="text" class="form-control" id="setName" placeholder="Enter a name for this question set">
+            </div>
+            <button onclick="uploadQuestions()" class="btn btn-primary">Upload Questions</button>
+            
+            <div class="mt-4">
+                <h3>Available Question Sets</h3>
+                <div id="questionSets" class="mb-3">
+                    <!-- Question sets will be listed here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="quizSection" class="hidden">
+            <h2 class="mb-4">MCQ Quiz</h2>
+            <div id="questions"></div>
+            <button class="btn btn-primary mt-3" onclick="submitQuiz()">Submit Quiz</button>
+        </div>
+
+        <div id="resultsSection" class="hidden">
+            <h2>Quiz Results</h2>
+            <div class="card bg-dark mb-4">
+                <div class="card-body">
+                    <h3>Score: <span id="score">0</span>%</h3>
+                    <p>Correct Answers: <span id="correctCount">0</span>/<span id="totalQuestions">0</span></p>
+                </div>
+            </div>
+            <div id="resultDetails"></div>
+            <div class="text-center mt-4">
+                <button class="btn btn-primary me-2" id="reviewButton" onclick="reviewIncorrectAnswers()">
+                    Review Incorrect Answers
+                </button>
+                <button class="btn btn-secondary me-2" onclick="retakeQuiz()">
+                    Retake Entire Quiz
+                </button>
+                <button class="btn btn-outline-secondary" onclick="backToSets()">
+                    Back to Question Sets
+                </button>
+            </div>
+        </div>
+
+        <div id="reviewSection" class="hidden">
+            <h2>Review Incorrect Answers</h2>
+            <div id="reviewQuestions"></div>
+            <div class="text-center mt-4">
+                <button class="btn btn-success" onclick="submitReview()">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestions = [];
+        let quizResults = null;
+        
+        // Load question sets when page loads
+        loadQuestionSets();
+        
+        async function loadQuestionSets() {
+            try {
+                const response = await fetch('/get_question_sets');
+                const sets = await response.json();
+                displayQuestionSets(sets);
+            } catch (error) {
+                console.error('Error loading question sets:', error);
+            }
+        }
+
+        function displayQuestionSets(sets) {
+            const setsContainer = document.getElementById('questionSets');
+            setsContainer.innerHTML = '';
+            
+            if (sets.length === 0) {
+                setsContainer.innerHTML = '<p>No question sets available.</p>';
+                return;
+            }
+            
+            sets.forEach(set => {
+                const setDiv = document.createElement('div');
+                setDiv.className = 'card mb-3 bg-dark';
+                
+                const setContent = `
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" class="set-checkbox form-check-input me-3" id="set_${set.id}">
+                            <h5 class="card-title mb-0 me-3 set-name" id="setName_${set.id}">${set.name}</h5>
+                            <span class="badge bg-info me-3">${set.question_count} questions</span>
+                            <button class="btn btn-sm btn-outline-primary me-2 edit-name-btn" 
+                                    onclick="editSetName(${set.id})">
+                                <i class="fas fa-edit"></i> Edit Name
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-danger" onclick="deleteSet(${set.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                setDiv.innerHTML = setContent;
+                setsContainer.appendChild(setDiv);
+            });
+
+            // Add start quiz button if there are sets
+            if (sets.length > 0) {
+                const startQuizDiv = document.createElement('div');
+                startQuizDiv.className = 'text-center mt-4';
+                startQuizDiv.innerHTML = `
+                    <button class="btn btn-success btn-lg" onclick="startQuiz()">
+                        <i class="fas fa-play"></i> Start Quiz with Selected Sets
+                    </button>
+                `;
+                setsContainer.appendChild(startQuizDiv);
+            }
+        }
+
+        async function editSetName(setId) {
+            const nameElement = document.getElementById(`setName_${setId}`);
+            const currentName = nameElement.textContent;
+            
+            // Create input field
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'form-control';
+            input.value = currentName;
+            input.style.width = '200px';
+            
+            // Replace name with input
+            nameElement.textContent = '';
+            nameElement.appendChild(input);
+            input.focus();
+            
+            // Handle save on enter or blur
+            const saveNewName = async () => {
+                const newName = input.value.trim();
+                if (newName && newName !== currentName) {
+                    try {
+                        const response = await fetch('/update_set_name', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                set_id: setId,
+                                new_name: newName
+                            })
+                        });
+                        
+                        if (!response.ok) {
+                            const error = await response.json();
+                            throw new Error(error.error || 'Failed to update name');
+                        }
+                        
+                        // Update successful
+                        nameElement.textContent = newName;
+                    } catch (error) {
+                        alert('Error updating name: ' + error.message);
+                        nameElement.textContent = currentName;
+                    }
+                } else {
+                    // No change or empty name
+                    nameElement.textContent = currentName;
+                }
+            };
+            
+            input.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    saveNewName();
+                } else if (e.key === 'Escape') {
+                    nameElement.textContent = currentName;
+                }
+            });
+            
+            input.addEventListener('blur', saveNewName);
+        }
+
+        async function uploadQuestions() {
+            const fileInput = document.getElementById('questionFile');
+            const setNameInput = document.getElementById('setName');
+            const file = fileInput.files[0];
+            const setName = setNameInput.value.trim();
+            
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            if (setName) {
+                formData.append('set_name', setName);
+            }
+
+            try {
+                const response = await fetch('/upload_file', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Upload failed');
+                }
+                
+                const result = await response.json();
+                alert(result.message);
+                loadQuestionSets();  // Refresh the list
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Error uploading questions: ' + error.message);
+            }
+        }
+
+        async function deleteSet(setId) {
+            if (!confirm('Are you sure you want to delete this question set?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/delete_set/${setId}`, {
+                    method: 'POST'
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to delete question set');
+                }
+                
+                const result = await response.json();
+                alert(result.message);
+                loadQuestionSets();  // Refresh the list
+            } catch (error) {
+                console.error('Delete error:', error);
+                alert('Error deleting question set: ' + error.message);
+            }
+        }
+
+        async function startQuiz() {
+            const selectedSets = Array.from(document.querySelectorAll('.set-checkbox:checked'))
+                .map(checkbox => parseInt(checkbox.id.replace('set_', '')));
+            
+            if (selectedSets.length === 0) {
+                alert('Please select at least one question set');
+                return;
+            }
+
+            try {
+                const response = await fetch('/get_quiz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ selected_sets: selectedSets })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to start quiz');
+                }
+                
+                const questions = await response.json();
+                
+                if (questions.error) {
+                    alert(questions.error);
+                    return;
+                }
+
+                window.currentQuestions = questions;  // Store questions globally
+                displayQuestions(questions);
+                
+                document.getElementById('uploadSection').classList.add('hidden');
+                document.getElementById('quizSection').classList.remove('hidden');
+                document.getElementById('resultsSection').classList.add('hidden');
+                document.getElementById('reviewSection').classList.add('hidden');
+            } catch (error) {
+                console.error('Error starting quiz:', error);
+                alert('Error starting quiz: ' + error.message);
+            }
+        }
+
+        function displayQuestions(questions) {
+            const questionsContainer = document.getElementById('questions');
+            questionsContainer.innerHTML = '';
+            window.answeredQuestions = new Set(); // Track answered questions
+
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-card';
+                questionDiv.innerHTML = `
+                    <h5>Question ${index + 1}</h5>
+                    <p>${q.question}</p>
+                    <div class="options-container" id="options-${q.id}">
+                        ${q.options.map((option, optIndex) => `
+                            <label class="option-label" data-question-id="${q.id}">
+                                <input type="radio" name="q${q.id}" value="${option}" 
+                                    onchange="checkAnswer(${q.id}, '${option.replace(/'/g, "\\'")}')"
+                                    ${window.answeredQuestions.has(q.id) ? 'disabled' : ''}>
+                                ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-text" id="feedback-${q.id}"></div>
+                `;
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        async function checkAnswer(questionId, selectedAnswer) {
+            // If question was already answered, do nothing
+            if (window.answeredQuestions.has(questionId)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/check_answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        question_id: questionId,
+                        selected_answer: selectedAnswer
+                    })
+                });
+                
+                const result = await response.json();
+                const feedbackDiv = document.getElementById(`feedback-${questionId}`);
+                const optionsContainer = document.getElementById(`options-${questionId}`);
+                const options = optionsContainer.querySelectorAll('.option-label');
+                
+                // Mark question as answered
+                window.answeredQuestions.add(questionId);
+                
+                // Disable all options for this question
+                options.forEach(option => {
+                    const input = option.querySelector('input');
+                    input.disabled = true;
+                    option.classList.add('disabled');
+                    
+                    const optionValue = input.value;
+                    option.classList.remove('correct-answer', 'wrong-answer');
+                    
+                    if (optionValue === result.correct_answer) {
+                        option.classList.add('correct-answer');
+                    } else if (optionValue === selectedAnswer && selectedAnswer !== result.correct_answer) {
+                        option.classList.add('wrong-answer');
+                    }
+                });
+
+                feedbackDiv.textContent = result.is_correct ? 
+                    '✓ Correct!' : 
+                    `✗ Incorrect. The correct answer is: ${result.correct_answer}`;
+                feedbackDiv.style.color = result.is_correct ? '#98ff98' : '#ff9898';
+                
+            } catch (error) {
+                console.error('Error checking answer:', error);
+            }
+        }
+
+        async function submitQuiz() {
+            if (!window.currentQuestions) {
+                alert('No quiz in progress. Please start a new quiz.');
+                return;
+            }
+
+            // Collect all answers
+            const answers = {};
+            let allAnswered = true;
+            
+            window.currentQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                if (selected) {
+                    answers[q.id] = selected.value;
+                } else {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                if (!confirm('You have not answered all questions. Do you want to submit anyway?')) {
+                    return;
+                }
+            }
+
+            try {
+                const response = await fetch('/submit_quiz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ answers: answers })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to submit quiz');
+                }
+
+                const results = await response.json();
+                
+                // Store results for review
+                window.quizResults = results;
+                
+                displayResults(results);
+
+                document.getElementById('quizSection').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+                document.getElementById('reviewSection').classList.add('hidden');
+            } catch (error) {
+                console.error('Error submitting quiz:', error);
+                alert('Error submitting quiz: ' + error.message);
+            }
+        }
+
+        function displayResults(results) {
+            document.getElementById('score').textContent = results.score.toFixed(1);
+            document.getElementById('correctCount').textContent = results.correct_count;
+            document.getElementById('totalQuestions').textContent = results.total_questions;
+
+            const resultDetails = document.getElementById('resultDetails');
+            resultDetails.innerHTML = results.results.map((result, index) => {
+                const userAnswerText = result.user_answer === null ? 
+                    '<span class="text-warning">Not answered</span>' : 
+                    result.user_answer;
+                
+                return `
+                    <div class="question-card ${result.is_correct ? 'correct-answer' : 'wrong-answer'}">
+                        <h5>Question ${index + 1}</h5>
+                        <p>${result.question}</p>
+                        <div class="answer-details">
+                            <p>Your answer: ${userAnswerText}</p>
+                            <p>Correct answer: ${result.correct_answer}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Show/hide review button based on incorrect answers
+            const reviewButton = document.querySelector('button[onclick="reviewIncorrectAnswers()"]');
+            if (reviewButton) {
+                reviewButton.style.display = results.has_incorrect ? 'inline-block' : 'none';
+            }
+        }
+
+        function retakeQuiz() {
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('quizSection').classList.remove('hidden');
+            displayQuestions(window.currentQuestions);
+        }
+
+        function backToSets() {
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('uploadSection').classList.remove('hidden');
+            loadQuestionSets();
+        }
+
+        async function reviewIncorrectAnswers() {
+            try {
+                const response = await fetch('/review_incorrect');
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to get review questions');
+                }
+                
+                const questions = await response.json();
+                if (questions.error) {
+                    alert(questions.error);
+                    return;
+                }
+
+                // Store only the review questions
+                window.currentQuestions = questions;
+                displayQuestions(questions);
+                
+                // Update UI
+                document.getElementById('uploadSection').classList.add('hidden');
+                document.getElementById('quizSection').classList.remove('hidden');
+                document.getElementById('resultsSection').classList.add('hidden');
+                document.getElementById('reviewSection').classList.add('hidden');
+                
+                // Update submit button to use submitReview instead of submitQuiz
+                const submitButton = document.querySelector('button[onclick="submitQuiz()"]');
+                if (submitButton) {
+                    submitButton.onclick = submitReview;
+                }
+            } catch (error) {
+                console.error('Error starting review:', error);
+                alert('Error starting review: ' + error.message);
+            }
+        }
+
+        async function submitReview() {
+            if (!window.currentQuestions) {
+                alert('No review in progress');
+                return;
+            }
+
+            const answers = {};
+            let allAnswered = true;
+            
+            window.currentQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                if (selected) {
+                    answers[q.id] = selected.value;
+                } else {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                if (!confirm('You have not answered all questions. Do you want to submit anyway?')) {
+                    return;
+                }
+            }
+
+            try {
+                const response = await fetch('/submit_review', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ answers: answers })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to submit review');
+                }
+
+                const result = await response.json();
+                
+                if (result.status === 'continue') {
+                    // Still have incorrect answers
+                    alert(result.message);
+                    displayResults(result);
+                    
+                    // Show review button for next round
+                    document.getElementById('reviewButton').style.display = 'inline-block';
+                } else {
+                    // All correct
+                    alert(result.message);
+                    displayResults(result);
+                    
+                    // Hide review button since all are correct
+                    document.getElementById('reviewButton').style.display = 'none';
+                }
+
+                document.getElementById('quizSection').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+                document.getElementById('reviewSection').classList.add('hidden');
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                alert('Error submitting review: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

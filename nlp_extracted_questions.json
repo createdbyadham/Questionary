@@ -1,0 +1,294 @@
+{
+    "questions": [
+        {
+            "question": "What is a primary advantage of decision trees?",
+            "options": [
+                "They require advanced statistical knowledge to interpret.",
+                "They present knowledge in a logical structure easily understandable without statistical knowledge.",
+                "They are exclusively used for regression problems.",
+                "They cannot handle missing data."
+            ],
+            "correct_answer": "They present knowledge in a logical structure easily understandable without statistical knowledge."
+        },
+        {
+            "question": "Which of the following is a characteristic of a decision tree?",
+            "options": [
+                "It is only applicable for binary classification problems.",
+                "It cannot handle continuous data.",
+                "It starts with a root node and expands into a tree-like structure.",
+                "It does not involve splitting the dataset."
+            ],
+            "correct_answer": "It starts with a root node and expands into a tree-like structure."
+        },
+        {
+            "question": "What does the term 'pruning' in decision trees refer to?",
+            "options": [
+                "Dividing the root node into sub-nodes.",
+                "Merging datasets into a homogeneous group.",
+                "Removing unwanted branches from the tree.",
+                "Selecting the best attribute for the root node."
+            ],
+            "correct_answer": "Removing unwanted branches from the tree."
+        },
+        {
+            "question": "Which algorithm is NOT used for decision tree induction?",
+            "options": ["ID3", "C4.5", "SVM", "CART"],
+            "correct_answer": "SVM"
+        },
+        {
+            "question": "How does a decision tree handle numeric attributes during node splitting?",
+            "options": [
+                "By grouping values randomly.",
+                "By using comparison sets such as A > v or A ≤ v.",
+                "By converting numeric data into binary data.",
+                "By ignoring numeric attributes."
+            ],
+            "correct_answer": "By using comparison sets such as A > v or A ≤ v."
+        },
+        {
+            "question": "What does high entropy in a dataset indicate?",
+            "options": [
+                "High certainty and low randomness.",
+                "Low uncertainty and high order.",
+                "High uncertainty and high randomness.",
+                "Equal distribution among classes."
+            ],
+            "correct_answer": "High uncertainty and high randomness."
+        },
+        {
+            "question": "Which attribute selection measure is commonly used in decision trees?",
+            "options": [
+                "Information Gain",
+                "Mean Squared Error",
+                "Chi-Square Test",
+                "Principal Component Analysis"
+            ],
+            "correct_answer": "Information Gain"
+        },
+        {
+            "question": "What is the primary weakness of decision trees?",
+            "options": [
+                "They can overfit or underfit the model easily.",
+                "They are incompatible with large datasets.",
+                "They cannot handle numeric attributes.",
+                "They require manual calculation of splits."
+            ],
+            "correct_answer": "They can overfit or underfit the model easily."
+        },
+        {
+            "question": "What is the impact of small changes in training data on decision trees?",
+            "options": [
+                "It has no effect on the decision logic.",
+                "It can result in large changes to the decision logic.",
+                "It improves the model’s accuracy.",
+                "It simplifies the tree structure."
+            ],
+            "correct_answer": "It can result in large changes to the decision logic."
+        },
+        {
+            "question": "What does 'overfitting' in a decision tree model imply?",
+            "options": [
+                "The model performs poorly on training data but well on test data.",
+                "The model performs well on training data but poorly on test data.",
+                "The model has a high bias and low variance.",
+                "The model cannot split the root node."
+            ],
+            "correct_answer": "The model performs well on training data but poorly on test data."
+        },
+		{
+            "question": "What is the 'root node' in a decision tree?",
+            "options": [
+                "The node containing the final classification output.",
+                "The initial node representing the entire dataset.",
+                "The node created after pruning.",
+                "The last node with no further splits."
+            ],
+            "correct_answer": "The initial node representing the entire dataset."
+        },
+        {
+            "question": "Which of the following is true about decision nodes in a decision tree?",
+            "options": [
+                "They are always leaf nodes.",
+                "They represent features of the dataset and have multiple branches.",
+                "They are the final output nodes of the tree.",
+                "They cannot be split further."
+            ],
+            "correct_answer": "They represent features of the dataset and have multiple branches."
+        },
+        {
+            "question": "What does 'splitting' mean in the context of decision trees?",
+            "options": [
+                "Removing unnecessary branches.",
+                "Dividing a node into sub-nodes based on conditions.",
+                "Merging different classes into one.",
+                "Randomly selecting attributes for nodes."
+            ],
+            "correct_answer": "Dividing a node into sub-nodes based on conditions."
+        },
+        {
+            "question": "What is a 'leaf node' in a decision tree?",
+            "options": [
+                "The starting point of the tree structure.",
+                "A node that contains conditions for further splits.",
+                "A node that represents the outcome of decisions.",
+                "A node used to split the dataset."
+            ],
+            "correct_answer": "A node that represents the outcome of decisions."
+        },
+        {
+            "question": "How is a multi-way split performed for nominal attributes?",
+            "options": [
+                "By grouping all attribute values into one group.",
+                "By splitting based on the number of distinct attribute values.",
+                "By ignoring all distinct attribute values.",
+                "By creating a binary split regardless of values."
+            ],
+            "correct_answer": "By splitting based on the number of distinct attribute values."
+        },
+        {
+            "question": "Which is NOT a strength of decision trees?",
+            "options": [
+                "Can handle missing data effectively.",
+                "Provides interpretable models for small trees.",
+                "Excludes unimportant features automatically.",
+                "Produces highly stable decision logic regardless of dataset changes."
+            ],
+            "correct_answer": "Produces highly stable decision logic regardless of dataset changes."
+        },
+        {
+            "question": "What is the consequence of underfitting a decision tree model?",
+            "options": [
+                "High training accuracy but low test accuracy.",
+                "Low training accuracy and high test accuracy.",
+                "Poor performance on both training and test data.",
+                "Overly complex decision logic."
+            ],
+            "correct_answer": "Poor performance on both training and test data."
+        },
+        {
+            "question": "What does the 'greedy strategy' in decision tree building refer to?",
+            "options": [
+                "Dividing data randomly without conditions.",
+                "Selecting the best attribute for a split at every step.",
+                "Merging similar branches to reduce complexity.",
+                "Testing all attributes simultaneously for splits."
+            ],
+            "correct_answer": "Selecting the best attribute for a split at every step."
+        },
+        {
+            "question": "What does 'information gain' signify in decision tree algorithms?",
+            "options": [
+                "The probability of an outcome in the dataset.",
+                "The reduction in entropy after a split.",
+                "The total uncertainty in a training dataset.",
+                "The sum of all possible attribute values."
+            ],
+            "correct_answer": "The reduction in entropy after a split."
+        },
+        {
+            "question": "Which decision tree induction algorithm uses a top-down recursive strategy?",
+            "options": ["K-Means", "ID3", "SVM", "PCA"],
+            "correct_answer": "ID3"
+        },
+		{
+            "question": "What attribute type uses comparison sets like A > v or A ≤ v for splitting?",
+            "options": [
+                "Nominal attributes",
+                "Ordinal attributes",
+                "Binary attributes",
+                "Numerical attributes"
+            ],
+            "correct_answer": "Numerical attributes"
+        },
+        {
+            "question": "Which is NOT a way to address overfitting in decision trees?",
+            "options": [
+                "Adding more training examples.",
+                "Pruning the tree.",
+                "Reducing the number of features.",
+                "Increasing the number of tree levels."
+            ],
+            "correct_answer": "Increasing the number of tree levels."
+        },
+        {
+            "question": "How can axis-parallel splits limit decision tree performance?",
+            "options": [
+                "By making the tree too complex to interpret.",
+                "By failing to model some relationships effectively.",
+                "By making training slower.",
+                "By reducing entropy excessively."
+            ],
+            "correct_answer": "By failing to model some relationships effectively."
+        },
+        {
+            "question": "Which of the following is a weakness of decision trees?",
+            "options": [
+                "They are incompatible with small datasets.",
+                "They are biased towards splits on features with fewer levels.",
+                "They rely on non-graphical representations of data.",
+                "They cannot exclude unimportant features."
+            ],
+            "correct_answer": "They are biased towards splits on features with fewer levels."
+        },
+        {
+            "question": "What is the effect of small training data changes on a decision tree?",
+            "options": [
+                "Consistent decision rules.",
+                "Improved accuracy.",
+                "Major changes in decision logic.",
+                "Reduced overfitting risk."
+            ],
+            "correct_answer": "Major changes in decision logic."
+        },
+        {
+            "question": "What does 'high bias' indicate in a model?",
+            "options": [
+                "Low accuracy of estimation from training data.",
+                "High accuracy and precision of the model.",
+                "Over-complex decision logic.",
+                "Inability to handle missing data."
+            ],
+            "correct_answer": "Low accuracy of estimation from training data."
+        },
+        {
+            "question": "What does 'low variance' imply about a model's estimator?",
+            "options": [
+                "It is highly sensitive to changes in training data.",
+                "It remains consistent regardless of training data variations.",
+                "It always produces high accuracy on test data.",
+                "It has high uncertainty in decision logic."
+            ],
+            "correct_answer": "It remains consistent regardless of training data variations."
+        },
+        {
+            "question": "How can high variance in decision trees be mitigated?",
+            "options": [
+                "By training on smaller datasets.",
+                "By reducing the number of tree splits.",
+                "By using a larger set of features.",
+                "By pruning or adding more training data."
+            ],
+            "correct_answer": "By pruning or adding more training data."
+        },
+        {
+            "question": "What is a common issue with large decision trees?",
+            "options": [
+                "They are always underfitted.",
+                "They are difficult to interpret and may seem counterintuitive.",
+                "They perform poorly on training data.",
+                "They cannot handle continuous attributes."
+            ],
+            "correct_answer": "They are difficult to interpret and may seem counterintuitive."
+        },
+        {
+            "question": "What does 'underfitting' in a decision tree model imply?",
+            "options": [
+                "The model is too complex for the dataset.",
+                "The model performs poorly on both training and test data.",
+                "The model has low bias and high variance.",
+                "The model is over-optimized for the training data."
+            ],
+            "correct_answer": "The model performs poorly on both training and test data."
+        }
+    ]
+}

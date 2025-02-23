@@ -1,0 +1,89 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+
+
+# Virtual Environment
+venv/
+venv312/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment Variables
+.env
+.env
+.env.local
+.env.*
+*.env
+config.py
+*.env
+config.py
+.env.*.local
+*.ini
+
+Backend/.env
+Backend/core/.env
+Backend/core/config.py
+*.rdb
+
+#Logs
+#logs
+#logs/
+#*.log
+
+# Database
+*.sqlite3
+*.db
+*.sql
+.db_session.db
+*.rdb
+
+#Backups
+#backups/
+
+# Distribution / packaging
+dist/
+build/
+Frontend/node_modules
+node_modules
+*.egg-info/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Documentation
+docs/_build/
+*.pdf
+docs/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# System Files
+.DS_Store
+Thumbs.db
+
+*.toml
+
+
+
+#tests/
+*.docx
+
+# redis
+*.rdb
+
+*.md
