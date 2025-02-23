@@ -12,6 +12,12 @@ const api = axios.create({
 // Add request interceptor for logging
 api.interceptors.request.use(
   (config) => {
+    // Add Authorization header if token exists
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
     console.log('API Request:', {
       method: config.method,
       url: config.url,
@@ -42,21 +48,16 @@ api.interceptors.response.use(
 );
 
 export const getQuestionSets = async (): Promise<QuestionSet[]> => {
-  const response = await api.get('/get_question_sets');
+  const response = await api.get('/api/question-sets');
   return response.data;
 };
 
-export const uploadQuestions = async (
-  file: File,
-  setName?: string
-): Promise<{ message: string; session_id?: string; questions_imported?: number }> => {
+export const uploadQuestions = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
-  if (setName) {
-    formData.append('set_name', setName);
-  }
-
-  const response = await api.post('/upload_file', formData, {
+  formData.append('set_name', file.name.split('.')[0]); // Use filename as set name
+  
+  const response = await api.post('/api/upload-file', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -100,7 +101,7 @@ export const startQuiz = async (
   selectedSets: number[],
   questionsPerQuiz: number = 40
 ): Promise<Question[]> => {
-  const response = await api.post('/get_quiz', { 
+  const response = await api.post('/api/get_quiz', { 
     selected_sets: selectedSets,
     questions_per_quiz: questionsPerQuiz 
   });
@@ -115,10 +116,21 @@ export const startReview = async (): Promise<Question[]> => {
 };
 
 export const submitQuiz = async (
+  setId: number,
   answers: Record<string, string>
 ): Promise<QuizResult> => {
-  console.log('Submitting answers:', answers);  
-  const response = await api.post('/submit_quiz', { answers });
+  console.log('Submitting answers:', answers);
+  
+  // Transform answers from Record to array of objects
+  const formattedAnswers = Object.entries(answers).map(([questionId, answer]) => ({
+    question_id: parseInt(questionId),
+    selected_answer: answer
+  }));
+  
+  const response = await api.post('/api/submit_quiz', {
+    set_id: setId,
+    answers: formattedAnswers
+  });
   return response.data;
 };
 
@@ -126,6 +138,6 @@ export const submitReview = async (
   answers: Record<string, string>
 ): Promise<ReviewResult> => {
   console.log('Submitting review answers:', answers);
-  const response = await api.post('/submit_review', { answers });
+  const response = await api.post('/api/submit_review', { answers });
   return response.data;
 };

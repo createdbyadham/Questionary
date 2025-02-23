@@ -38,23 +38,15 @@ const parseOptions = (optionsStr: string | undefined | string[]): string[] => {
   if (Array.isArray(optionsStr)) {
     return optionsStr;
   }
-
+  
+  // If it's a string, try to parse it as JSON
   try {
-    // Try to parse as JSON
     const parsed = JSON.parse(optionsStr);
     if (Array.isArray(parsed)) {
       return parsed;
     }
   } catch (error) {
-    // If JSON parsing fails, try other methods
-    if (typeof optionsStr === 'string') {
-      // Check if it's a comma-separated string
-      if (optionsStr.includes(',')) {
-        return optionsStr.split(',').map(opt => opt.trim());
-      }
-      // If it's a single string, return it as a single-item array
-      return [optionsStr];
-    }
+    console.error('Error parsing options:', error);
   }
   
   return [];
@@ -118,9 +110,16 @@ export const Quiz: React.FC<QuizProps> = ({
   const handleSubmit = async () => {
     try {
       setIsSubmitting(true);
+      
+      // Get the set ID from the first question
+      const setId = questions[0]?.set_id;
+      if (!setId) {
+        throw new Error('No set ID found');
+      }
+      
       const result = isReview ? 
         await submitReview(answers) : 
-        await submitQuiz(answers);
+        await submitQuiz(setId, answers);
       setQuizResult(result);
     } catch (error) {
       console.error('Error submitting quiz:', error);
@@ -185,6 +184,10 @@ export const Quiz: React.FC<QuizProps> = ({
 
   const currentQuestion = questions[currentQuestionIndex];
   const progress = (Object.keys(answers).length / questions.length) * 100;
+
+  // Debug logging
+  console.log('Current question:', currentQuestion);
+  console.log('Parsed options:', currentQuestion ? parseOptions(currentQuestion.options) : []);
 
   return (
     <MotionContainer
@@ -315,7 +318,7 @@ export const Quiz: React.FC<QuizProps> = ({
           <QuestionCard
             key={currentQuestion.id}
             questionId={currentQuestion.id}
-            question={currentQuestion.question_text || ''}
+            question={currentQuestion.question || ''}
             options={parseOptions(currentQuestion.options)}
             selectedAnswer={answers[currentQuestion.id]}
             onAnswerSelect={handleAnswerSelect}

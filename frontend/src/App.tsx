@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { ChakraProvider, Box, extendTheme } from '@chakra-ui/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AppRoutes from './routes';
 import { Question } from './types';
 import { Home } from './pages/Home';
 import { Quiz } from './pages/Quiz';
 import { startReview } from './api';
+import { AuthProvider } from './context/AuthContext';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const theme = extendTheme({
   styles: {
@@ -104,29 +109,43 @@ function App() {
   };
 
   return (
-    <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <Router>
-          <Box
-            minH="100vh"
-            bg="gray.900"
-            position="relative"
-          >
-            {currentQuestions ? (
-              <Quiz
-                questions={currentQuestions}
-                onReviewIncorrect={handleReviewIncorrect}
-                onRetakeQuiz={handleRetakeQuiz}
-                onBackToSets={handleBackToSets}
-                isReview={isReview}
+    <AuthProvider>
+      <ChakraProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Box
+                      minH="100vh"
+                      bg="gray.900"
+                      position="relative"
+                    >
+                      {currentQuestions ? (
+                        <Quiz
+                          questions={currentQuestions}
+                          onReviewIncorrect={handleReviewIncorrect}
+                          onRetakeQuiz={handleRetakeQuiz}
+                          onBackToSets={handleBackToSets}
+                          isReview={isReview}
+                        />
+                      ) : (
+                        <Home onStartQuiz={handleStartQuiz} />
+                      )}
+                    </Box>
+                  </ProtectedRoute>
+                }
               />
-            ) : (
-              <Home onStartQuiz={handleStartQuiz} />
-            )}
-          </Box>
-        </Router>
-      </QueryClientProvider>
-    </ChakraProvider>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </Router>
+        </QueryClientProvider>
+      </ChakraProvider>
+    </AuthProvider>
   );
 }
 

@@ -1,8 +1,8 @@
 export interface Question {
   id: number;
-  question_text: string;
-  options: string; // JSON string of options array
-  correct_answer: string;
+  question: string;
+  options: string[];
+  correct_answer?: string;
   set_id: number;
 }
 
