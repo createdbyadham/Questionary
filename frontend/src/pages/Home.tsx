@@ -20,6 +20,9 @@ import {
   MenuList,
   MenuItem,
   Portal,
+  Alert,
+  AlertIcon,
+  AlertDescription,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -38,6 +41,7 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
   const [file, setFile] = useState<File | null>(null);
   const [setName, setSetName] = useState('');
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<string>('');
   const [selectedSets, setSelectedSets] = useState<number[]>([]);
   const [editingSetId, setEditingSetId] = useState<number | null>(null);
   const [newSetName, setNewSetName] = useState('');
@@ -79,6 +83,7 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
 
     try {
       setUploadProgress(0);
+      setUploadStatus('Starting upload...');
       const response = await uploadQuestions(file, setName);
       
       // If it's a JSON file, we'll get questions_imported in the response
@@ -94,6 +99,7 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
         setFile(null);
         setSetName('');
         setUploadProgress(null);
+        setUploadStatus('');
         return;
       }
       
@@ -103,7 +109,7 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
       }
 
       let retryCount = 0;
-      const maxRetries = 60; // Maximum 1 minute of polling
+      const maxRetries = 120; // Maximum 2 minutes of polling
       
       // Start polling for progress
       const pollInterval = setInterval(async () => {
@@ -115,6 +121,7 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
 
           const progress = await getUploadProgress(response.session_id!);
           setUploadProgress(progress.percent);
+          setUploadStatus(progress.message);
           
           if (progress.status === 'completed' || progress.status === 'error') {
             clearInterval(pollInterval);
@@ -133,6 +140,7 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
               throw new Error(progress.message);
             }
             setUploadProgress(null);
+            setUploadStatus('');
           }
           retryCount++;
         } catch (error) {
@@ -149,6 +157,7 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
         isClosable: true,
       });
       setUploadProgress(null);
+      setUploadStatus('');
     }
   };
 
@@ -439,13 +448,13 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
               </MotionButton>
 
               {uploadProgress !== null && (
-                <Progress
-                  value={uploadProgress}
-                  size="sm"
-                  colorScheme="blue"
-                  w="full"
-                  borderRadius="full"
-                />
+                <Box>
+                  <Progress value={uploadProgress} size="sm" colorScheme="blue" mb={2} />
+                  <Alert status={uploadProgress === 100 ? 'success' : 'info'} variant="left-accent">
+                    <AlertIcon />
+                    <AlertDescription>{uploadStatus || 'Processing...'}</AlertDescription>
+                  </Alert>
+                </Box>
               )}
             </VStack>
           </MotionBox>
