@@ -82,7 +82,7 @@ export const getUploadProgress = async (sessionId: string): Promise<{ status: st
 };
 
 export const deleteSet = async (setId: number): Promise<{ message: string }> => {
-  const response = await api.delete(`/delete_set/${setId}`);
+  const response = await api.delete(`/api/question-sets/${setId}`);
   return response.data;
 };
 
@@ -90,9 +90,8 @@ export const updateSetName = async (
   setId: number,
   newName: string
 ): Promise<{ message: string }> => {
-  const response = await api.post(`/update_set_name`, { 
-    set_id: setId,
-    new_name: newName 
+  const response = await api.put(`/api/question-sets/${setId}/name`, { 
+    name: newName 
   });
   return response.data;
 };
