@@ -1,29 +1,23 @@
-import requests
+import os
+from openai import OpenAI
 import json
-from typing import List, Dict, Union, Callable
+from typing import List, Dict, Union, Callable, Tuple
 import PyPDF2
 import re
 import time
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+import concurrent.futures
 from tqdm import tqdm
 import shutil
-import os
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
-import concurrent.futures
-from typing import Dict, List, Union, Tuple
 
 class MCQExtractor:
     def __init__(self):
         load_dotenv()
-        self.api_key = os.getenv('HYPERBOLIC_API_KEY')
-        self.api_url = 'https://api.hyperbolic.xyz/v1/chat/completions'
-        self.headers = {
-            'Content-Type': 'application/json',
-            'Authorization': f'Bearer {self.api_key}'
-        }
-        self.session = requests.Session()
+        self.client = OpenAI(
+            base_url="https://models.inference.ai.azure.com",
+            api_key=os.getenv('GITHUB_TOKEN')
+        )
         self.progress_callback = None
         self.current_progress = 0
         self.total_progress = 0
@@ -110,7 +104,14 @@ class MCQExtractor:
     def process_batch(self, batch: str, batch_index: int, total_batches: int) -> Tuple[int, List[Dict]]:
         """Process a single batch of questions."""
         print(f"\nProcessing batch {batch_index + 1}/{total_batches}:")
-        print(f"Batch content: {batch[:500]}...")  # Increased preview length
+        print(f"Batch content: {batch[:500]}...")
+
+        system_prompt = """You are an expert at extracting multiple choice questions from text and formatting them as JSON. For each question:
+1. Remove question numbers
+2. Remove option letters (A,B,C,D)
+3. Ensure correct_answer matches one of the options exactly
+4. Handle both multiple choice (4 options) and True/False questions
+5. Output only valid JSON in the specified format"""
 
         user_prompt = f"""Extract these multiple choice questions into JSON format with this exact structure:
 {{
@@ -131,52 +132,31 @@ class MCQExtractor:
 Questions to process:
 {batch}"""
 
-        data = {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "Extract multiple choice questions from this text and format them as JSON. For each question: remove question numbers, remove option letters (A,B,C,D), ensure correct_answer matches one of the options exactly, and handle both multiple choice (4 options) and True/False questions. Output only valid JSON."
-                },
-                {
-                    "role": "assistant",
-                    "content": "I'll help you extract and format the MCQs as JSON with clean formatting and exact matching answers."
-                },
-                {
-                    "role": "user",
-                    "content": user_prompt
-                }
-            ],
-            "model": "meta-llama/Llama-3.3-70B-Instruct",
-            "max_tokens": 2048,
-            "temperature": 0.1,
-            "top_p": 0.9
-        }
-
         max_retries = 3
         retry_count = 0
         
         while retry_count < max_retries:
             try:
-                response = requests.post(
-                    self.api_url,
-                    headers=self.headers,
-                    json=data,
-                    timeout=60
+                response = self.client.chat.completions.create(
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": system_prompt,
+                        },
+                        {
+                            "role": "user",
+                            "content": user_prompt,
+                        }
+                    ],
+                    model="gpt-4o",
+                    temperature=0.1,
+                    max_tokens=4096,
+                    top_p=1
                 )
                 
-                if response.status_code != 200:
-                    print(f"Batch {batch_index + 1} - API response status: {response.status_code}")
-                    print(f"Response content: {response.text}")
-                    response.raise_for_status()
-                
-                response_data = response.json()
-                
-                if 'choices' not in response_data or not response_data['choices']:
-                    raise Exception("Invalid API response format")
-                    
-                ai_response = response_data['choices'][0]['message']['content'].strip()
+                ai_response = response.choices[0].message.content.strip()
                 print(f"\nAI Response for batch {batch_index + 1}:")
-                print(ai_response[:500])  # Print first part of response
+                print(ai_response[:500])
                 
                 # Remove markdown and clean response
                 ai_response = re.sub(r'^```json\s*|\s*```$', '', ai_response).strip()
@@ -233,7 +213,7 @@ Questions to process:
         return batch_index, []
 
     def extract_mcqs_with_ai(self, text: str) -> Dict[str, List[Dict[str, Union[str, List[str], str]]]]:
-        """Use Llama-3.3-70B to extract MCQs from text using parallel processing."""
+        """Use GPT-4 to extract MCQs from text using parallel processing."""
         print("Starting MCQ extraction...")
         chunks = self.chunk_text(text)
         total_batches = len(chunks)

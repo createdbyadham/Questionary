@@ -3,6 +3,8 @@ import shutil
 import time
 import json
 from mcq_extractor import MCQExtractor
+from flask import current_app
+from .models import QuestionSet, Question, db
 
 # Initialize MCQ extractor
 mcq_extractor = MCQExtractor()
@@ -70,7 +72,7 @@ def process_file_async(file_path: str, session_id: str):
         # Initialize progress
         progress_info[session_id].update({
             'status': 'processing',
-            'message': 'Starting processing...',
+            'message': 'Starting file processing...',
             'percent': 0,
             'completed': False,
             'questions_saved': False
@@ -80,76 +82,88 @@ def process_file_async(file_path: str, session_id: str):
         temp_file = f"{file_path}.temp"
         shutil.copy2(file_path, temp_file)
         print(f"Created temporary PDF: {temp_file}")
+        progress_info[session_id].update({
+            'message': 'Extracting text from PDF...',
+            'percent': 10
+        })
         
         try:
             # Extract text from PDF
             pdf_text = mcq_extractor.extract_text_from_pdf(temp_file)
-            progress_info[session_id].update({
-                'message': 'Extracted text from PDF, processing questions...',
-                'percent': 20
-            })
-            
             if not pdf_text.strip():
                 raise Exception("No text could be extracted from the PDF file")
+            
+            progress_info[session_id].update({
+                'message': 'Text extracted successfully. Processing questions...',
+                'percent': 20
+            })
             
             # Extract questions using AI
             def progress_callback(message, current, total):
                 percent = 20 + (current / total * 60)  # Scale to 20-80%
                 progress_info[session_id].update({
-                    'message': message,
+                    'message': f'Processing questions: {message}',
                     'percent': percent
                 })
             
             mcq_extractor.set_progress_callback(progress_callback)
-            questions = mcq_extractor.extract_mcqs_with_ai(pdf_text)
+            result = mcq_extractor.process_file(temp_file)
             
-            if not questions or not questions.get('questions'):
+            if not result or not result.get('questions'):
                 raise Exception("No questions were extracted from the file")
             
+            # Save questions to database within app context
             progress_info[session_id].update({
-                'message': 'Saving questions to database...',
+                'message': 'Questions extracted. Saving to database...',
                 'percent': 80
             })
             
-            # Save questions to database with the set name
-            question_set = QuestionSet(name=set_name)
-            db.session.add(question_set)
-            db.session.commit()  # Commit to get the question_set.id
-            
-            for q in questions['questions']:
-                # Ensure options is a JSON string array
-                options_json = process_options(q['options'])
-                question = Question(
-                    question_text=q['question'],
-                    options=options_json,
-                    correct_answer=q['correct_answer'],
-                    set_id=question_set.id
-                )
-                db.session.add(question)
-            
-            db.session.commit()
-            print(f"Saved {len(questions['questions'])} questions to database with set name: {set_name}")
-            
-            # Update progress with success
-            progress_info[session_id].update({
-                'status': 'complete',
-                'message': f'Successfully processed {len(questions["questions"])} questions',
-                'questions': questions['questions'],
-                'completed': True,
-                'questions_saved': True,
-                'percent': 100
-            })
+            with current_app.app_context():
+                # Create new question set
+                question_set = QuestionSet(name=set_name, user_id=progress_info[session_id].get('user_id'))
+                db.session.add(question_set)
+                db.session.commit()
+                
+                # Add questions to the set
+                total_questions = len(result['questions'])
+                for i, q in enumerate(result['questions']):
+                    options_json = process_options(q['options'])
+                    question = Question(
+                        question_text=q['question'],
+                        options=options_json,
+                        correct_answer=q['correct_answer'],
+                        set_id=question_set.id
+                    )
+                    db.session.add(question)
+                    
+                    # Update progress for database saving
+                    progress_info[session_id].update({
+                        'message': f'Saving questions to database ({i + 1}/{total_questions})...',
+                        'percent': 80 + ((i + 1) / total_questions * 20)  # Scale from 80-100%
+                    })
+                
+                db.session.commit()
+                
+                progress_info[session_id].update({
+                    'status': 'completed',
+                    'message': f'Successfully processed {total_questions} questions',
+                    'percent': 100,
+                    'completed': True,
+                    'questions_saved': True,
+                    'set_id': question_set.id
+                })
             
         except Exception as e:
-            print(f"Error processing file: {str(e)}")
+            print(f"Error in process_file: {str(e)}")
             progress_info[session_id].update({
                 'status': 'error',
                 'message': str(e),
-                'error': str(e),
+                'percent': 0,
                 'completed': True,
-                'percent': 100
+                'error': True
             })
             raise
+        
         finally:
             # Clean up temporary file
             cleanup_file(temp_file)
@@ -160,13 +174,14 @@ def process_file_async(file_path: str, session_id: str):
         progress_info[session_id].update({
             'status': 'error',
             'message': str(e),
-            'error': str(e),
+            'percent': 0,
             'completed': True,
-            'percent': 100
+            'error': True
         })
     finally:
         # Clean up original file
         cleanup_file(file_path)
+        print(f"Cleaned up file: {file_path}")
 
 def process_options(options):
     """Process options to ensure they are stored in a consistent JSON format"""
