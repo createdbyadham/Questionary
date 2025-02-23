@@ -3,8 +3,6 @@ import shutil
 import time
 import json
 from mcq_extractor import MCQExtractor
-from flask import current_app
-from .models import QuestionSet, Question, db
 
 # Initialize MCQ extractor
 mcq_extractor = MCQExtractor()
