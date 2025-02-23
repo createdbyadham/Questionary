@@ -250,34 +250,47 @@ Questions to process:
         return {"questions": all_questions}
 
     def process_file(self, file_path: str) -> Dict[str, List[Dict[str, Union[str, List[str], str]]]]:
-        """Process either PDF or text file and extract MCQs."""
+        """Process a file and extract/generate questions."""
         try:
-            print(f"Starting to process file: {file_path}")
-            if not os.path.exists(file_path):
-                raise Exception(f"File not found: {file_path}")
-
-            if file_path.lower().endswith('.pdf'):
-                text = self.extract_text_from_pdf(file_path)
-            else:
-                self.update_progress("Reading text file", 0, 1)
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    text = file.read()
-                self.update_progress("Reading text file", 1, 1)
-
-            text = self.clean_text(text)
-            result = self.extract_mcqs_with_ai(text)
-
-            self.update_progress("Saving results", 0, 1)
-            output_path = os.path.join(os.path.dirname(file_path), 'parsed_questions.json')
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(result, f, indent=2, ensure_ascii=False)
-            self.update_progress("Saving results", 1, 1)
-
-            return result
-
+            print("\nStarting file processing...")
+            
+            # Extract text from file
+            text = self.extract_text_from_pdf(file_path)
+            if not text.strip():
+                raise Exception("No text could be extracted from the file")
+            
+            # Split text into manageable chunks
+            chunks = self.chunk_text(text)
+            total_chunks = len(chunks)
+            questions = []
+            
+            # Process each chunk
+            for i, chunk in enumerate(chunks, 1):
+                if self.progress_callback:
+                    self.progress_callback(
+                        f"Processing chunk {i}/{total_chunks}",
+                        i,
+                        total_chunks
+                    )
+                
+                try:
+                    batch_questions = self.process_batch(chunk, i, total_chunks)
+                    if batch_questions:
+                        print(f"Successfully extracted {len(batch_questions)} questions from batch {i}")
+                        questions.extend(batch_questions)
+                except Exception as e:
+                    print(f"Error processing batch {i}: {str(e)}")
+                    continue
+            
+            if not questions:
+                raise Exception("No questions could be extracted from the file")
+            
+            print(f"Successfully extracted a total of {len(questions)} questions")
+            return {'questions': questions}
+            
         except Exception as e:
-            print(f"Error processing file: {str(e)}")
-            return {"questions": []}
+            print(f"Error in process_file: {str(e)}")
+            raise
 
 def extract_text(file_path):
     pdf_reader = PdfReader(file_path)

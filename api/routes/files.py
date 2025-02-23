@@ -15,7 +15,7 @@ files_bp = Blueprint('files', __name__)
 # Dictionary to store progress information
 progress_info = {}
 
-def process_file_async(file_path: str, session_id: str, user_id: str):
+def process_file_async(app, file_path: str, session_id: str, user_id: str):
     """Process file asynchronously and clean up afterwards."""
     try:
         print(f"\nProcessing PDF file: {file_path}")
@@ -67,33 +67,37 @@ def process_file_async(file_path: str, session_id: str, user_id: str):
                 'percent': 80
             })
             
-            # Save questions to database with the set name and user_id
-            question_set = QuestionSet(name=set_name, user_id=int(user_id))
-            db.session.add(question_set)
-            db.session.commit()
-            
-            for q in questions['questions']:
-                options_json = process_options(q['options'])
-                question = Question(
-                    question_text=q['question'],
-                    options=options_json,
-                    correct_answer=q['correct_answer'],
-                    set_id=question_set.id
-                )
-                db.session.add(question)
-            
-            db.session.commit()
-            print(f"Saved {len(questions['questions'])} questions to database with set name: {set_name}")
-            
-            progress_info[session_id].update({
-                'status': 'complete',
-                'message': f'Successfully processed {len(questions["questions"])} questions',
-                'questions': questions['questions'],
-                'completed': True,
-                'questions_saved': True,
-                'set_id': question_set.id,
-                'percent': 100
-            })
+            # Save questions to database with the set name and user_id within app context
+            with app.app_context():
+                question_set = QuestionSet(name=set_name, user_id=int(user_id))
+                db.session.add(question_set)
+                db.session.commit()
+                
+                for q in questions['questions']:
+                    # Ensure options are stored as a JSON string
+                    options = process_options(q['options'])
+                    options_json = json.dumps(options) if isinstance(options, list) else options
+                    
+                    question = Question(
+                        question_text=q['question'],
+                        options=options_json,
+                        correct_answer=q['correct_answer'],
+                        set_id=question_set.id
+                    )
+                    db.session.add(question)
+                
+                db.session.commit()
+                print(f"Saved {len(questions['questions'])} questions to database with set name: {set_name}")
+                
+                progress_info[session_id].update({
+                    'status': 'complete',
+                    'message': f'Successfully processed {len(questions["questions"])} questions',
+                    'questions': questions['questions'],
+                    'completed': True,
+                    'questions_saved': True,
+                    'set_id': question_set.id,
+                    'percent': 100
+                })
             
         except Exception as e:
             print(f"Error processing file: {str(e)}")
@@ -230,8 +234,12 @@ def upload_file():
         }
         print(f"Initialized progress tracking for session {session_id}")
         
+        # Get the current app
+        from flask import current_app
+        app = current_app._get_current_object()
+        
         # Start processing in a separate thread
-        thread = threading.Thread(target=process_file_async, args=(file_path, session_id, str(current_user_id)))
+        thread = threading.Thread(target=process_file_async, args=(app, file_path, session_id, str(current_user_id)))
         thread.start()
         
         return jsonify({
