@@ -120,28 +120,38 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
           }
 
           const progress = await getUploadProgress(response.session_id!);
-          setUploadProgress(progress.percent);
-          setUploadStatus(progress.message);
           
-          if (progress.status === 'completed' || progress.status === 'error') {
+          // Update progress and status
+          if (progress.percent !== undefined) {
+            setUploadProgress(progress.percent);
+          }
+          if (progress.message) {
+            setUploadStatus(progress.message);
+          }
+          
+          // Check for completion or error
+          if (progress.status === 'complete') {
             clearInterval(pollInterval);
-            if (progress.status === 'completed') {
-              toast({
-                title: 'Upload successful',
-                description: progress.message,
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
-              });
+            toast({
+              title: 'Upload successful',
+              description: progress.message,
+              status: 'success',
+              duration: 3000,
+              isClosable: true,
+            });
+            // Add a small delay before invalidating queries to ensure DB consistency
+            setTimeout(() => {
               queryClient.invalidateQueries({ queryKey: ['questionSets'] });
-              setFile(null);
-              setSetName('');
-            } else {
-              throw new Error(progress.message);
-            }
+            }, 500);
+            setFile(null);
+            setSetName('');
             setUploadProgress(null);
             setUploadStatus('');
+          } else if (progress.status === 'error') {
+            clearInterval(pollInterval);
+            throw new Error(progress.message || 'Upload failed');
           }
+          
           retryCount++;
         } catch (error) {
           clearInterval(pollInterval);
@@ -149,15 +159,15 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
         }
       }, 1000); // Check every second
     } catch (error) {
+      setUploadProgress(null);
+      setUploadStatus('');
       toast({
         title: 'Upload failed',
         description: error instanceof Error ? error.message : 'An error occurred',
         status: 'error',
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
-      setUploadProgress(null);
-      setUploadStatus('');
     }
   };
 

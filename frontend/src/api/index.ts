@@ -67,7 +67,7 @@ export const uploadQuestions = async (file: File) => {
 
 export const getUploadProgress = async (sessionId: string): Promise<{ status: string; message: string; percent: number }> => {
   try {
-    const response = await api.get(`/get_progress/${sessionId}`);
+    const response = await api.get(`/api/upload-progress/${sessionId}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
