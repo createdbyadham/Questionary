@@ -38,4 +38,6 @@ class Question(db.Model):
     options = db.Column(db.String(500), nullable=False)  # Stored as JSON string
     correct_answer = db.Column(db.String(500), nullable=False)
     set_id = db.Column(db.Integer, db.ForeignKey('question_set.id'), nullable=False)
+    source_lecture = db.Column(db.String(255))  # Name of the source lecture file
+    page_range = db.Column(db.String(50))  # Page range where the question was generated from
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

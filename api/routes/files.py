@@ -8,20 +8,21 @@ import shutil
 import threading
 import time
 from ..models import QuestionSet, Question, db
-from ..utils import mcq_extractor, process_options
+from ..utils import mcq_extractor, mcq_generator, process_options
 
 files_bp = Blueprint('files', __name__)
 
 # Dictionary to store progress information
 progress_info = {}
 
-def process_file_async(app, file_path: str, session_id: str, user_id: str):
+def process_file_async(app, file_path: str, session_id: str, user_id: str, model_type: str):
     """Process file asynchronously and clean up afterwards."""
     try:
         print(f"\nProcessing PDF file: {file_path}")
         
-        # Get the set name from progress info
+        # Get the set name and num_questions from progress info
         set_name = progress_info[session_id].get('set_name', 'Unnamed Set')
+        num_questions = progress_info[session_id].get('num_questions', 10)  # Default to 10 if not specified
         
         # Initialize progress
         progress_info[session_id].update({
@@ -39,7 +40,8 @@ def process_file_async(app, file_path: str, session_id: str, user_id: str):
         
         try:
             # Extract text from PDF
-            pdf_text = mcq_extractor.extract_text_from_pdf(temp_file)
+            processor = mcq_generator if model_type == 'generator' else mcq_extractor
+            pdf_text = processor.extract_text_from_pdf(temp_file)
             progress_info[session_id].update({
                 'message': 'Extracted text from PDF, processing questions...',
                 'percent': 20
@@ -56,8 +58,17 @@ def process_file_async(app, file_path: str, session_id: str, user_id: str):
                     'percent': percent
                 })
             
-            mcq_extractor.set_progress_callback(progress_callback)
-            questions = mcq_extractor.extract_mcqs_with_ai(pdf_text)
+            processor.set_progress_callback(progress_callback)
+            
+            if model_type == 'generator':
+                # Generator handles text extraction internally in process_lecture
+                questions = {'questions': processor.process_lecture(temp_file, questions_per_chunk=num_questions)}
+            else:
+                # For extractor, we need to extract text first
+                pdf_text = processor.extract_text_from_pdf(temp_file)
+                if not pdf_text.strip():
+                    raise Exception("No text could be extracted from the PDF file")
+                questions = processor.extract_mcqs_with_ai(pdf_text)
             
             if not questions or not questions.get('questions'):
                 raise Exception("No questions were extracted from the file")
@@ -82,7 +93,9 @@ def process_file_async(app, file_path: str, session_id: str, user_id: str):
                         question_text=q['question'],
                         options=options_json,
                         correct_answer=q['correct_answer'],
-                        set_id=question_set.id
+                        set_id=question_set.id,
+                        source_lecture=q.get('source_lecture', ''),
+                        page_range=q.get('page_range', '')
                     )
                     db.session.add(question)
                 
@@ -150,8 +163,11 @@ def upload_file():
         if file.filename == '':
             return jsonify({'error': 'No file selected'}), 400
         
-        # Get the set name from the form data
+        # Get the set name and model type from the form data
         set_name = request.form.get('set_name', '').strip()
+        model_type = request.form.get('model_type', 'extractor')  # Default to extractor
+        num_questions = int(request.form.get('num_questions', '10'))  # Get num_questions from form data
+        
         if not set_name:
             # Use the filename without extension as the default set name
             set_name = os.path.splitext(secure_filename(file.filename))[0]
@@ -189,7 +205,9 @@ def upload_file():
                         question_text=q['question'],
                         options=options_json,
                         correct_answer=q['correct_answer'],
-                        set_id=question_set.id
+                        set_id=question_set.id,
+                        source_lecture=q.get('source_lecture', ''),
+                        page_range=q.get('page_range', '')
                     )
                     db.session.add(question)
                 
@@ -223,10 +241,12 @@ def upload_file():
         
         # Initialize progress tracking with set name and timestamp
         progress_info[session_id] = {
-            'status': 'processing',
-            'message': 'Starting processing...',
+            'status': 'uploading',
+            'message': 'File upload started...',
             'percent': 0,
             'set_name': set_name,
+            'num_questions': num_questions,  # Store num_questions in progress info
+            'model_type': model_type,
             'timestamp': time.time(),
             'completed': False,
             'error': None,
@@ -239,7 +259,7 @@ def upload_file():
         app = current_app._get_current_object()
         
         # Start processing in a separate thread
-        thread = threading.Thread(target=process_file_async, args=(app, file_path, session_id, str(current_user_id)))
+        thread = threading.Thread(target=process_file_async, args=(app, file_path, session_id, str(current_user_id), model_type))
         thread.start()
         
         return jsonify({

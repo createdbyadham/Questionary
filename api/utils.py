@@ -3,9 +3,11 @@ import shutil
 import time
 import json
 from mcq_extractor import MCQExtractor
+from mcq_generator import MCQGenerator
 
-# Initialize MCQ extractor
+# Initialize MCQ processors
 mcq_extractor = MCQExtractor()
+mcq_generator = MCQGenerator()
 
 # Store progress information with TTL
 progress_info = {}
@@ -80,3 +82,13 @@ def process_options(options):
         return options
     else:
         raise ValueError("Options must be either a JSON string or a list")
+
+def process_file_with_model(file_path: str, model_type: str, progress_callback=None):
+    """Process file with the selected model"""
+    if model_type == 'generator':
+        processor = mcq_generator
+    else:  # default to extractor
+        processor = mcq_extractor
+        
+    processor.set_progress_callback(progress_callback)
+    return processor.process_lecture(file_path)

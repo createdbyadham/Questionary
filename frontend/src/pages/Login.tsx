@@ -1,19 +1,35 @@
 import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  FormControl,
+  Input,
+  VStack,
+  Text,
+  Container,
+  InputGroup,
+  InputLeftElement,
+  Link,
+  useToast,
+} from '@chakra-ui/react';
+import { DoorOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
+import { motion } from 'framer-motion';
+
+const MotionBox = motion(Box);
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const toast = useToast();
   const { setUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
     try {
@@ -22,70 +38,135 @@ const Login: React.FC = () => {
       setUser(response.user);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'An error occurred');
+      toast({
+        title: 'Error',
+        description: err.response?.data?.error || 'Invalid username or password',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="username" className="sr-only">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </div>
+    <Box
+      minH="100vh"
+      bg="linear-gradient(135deg, #010203 50%, #1c0607 100%)"
+      py={20}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Container maxW="md">
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Box
+            p={8}
+            bg="rgba(30, 30, 17, 0.9)"
+            backdropFilter="blur(10px)"
+            borderRadius="24px"
+            border="1px solid"
+            borderColor="whiteAlpha.200"
+            boxShadow="xl"
+          >
+            <VStack spacing={6} align="stretch">
+              <VStack spacing={2}>
+                <Box
+                  bg="whiteAlpha.200"
+                  p={3}
+                  borderRadius="full"
+                  width="48px"
+                  height="48px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <DoorOpen color="white" boxSize={6} />
+                </Box>
+                <Text
+                  fontSize="2xl"
+                  fontWeight="bold"
+                  color="white"
+                  textAlign="center"
+                >
+                  Welcome Back!
+                </Text>
+                <Text color="whiteAlpha.600" textAlign="center" fontSize="sm">
+                  Please sign in to continue
+                </Text>
+              </VStack>
 
-          {error && (
-            <div className="text-red-500 text-sm text-center">{error}</div>
-          )}
+              <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                <VStack spacing={4}>
+                  <FormControl>
+                    <InputGroup>
+                      <Input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Username"
+                        size="lg"
+                        bg="whiteAlpha.100"
+                        border="none"
+                        color="white"
+                        _placeholder={{ color: 'whiteAlpha.500' }}
+                        _hover={{ bg: 'whiteAlpha.200' }}
+                        _focus={{ bg: 'whiteAlpha.200', boxShadow: 'none' }}
+                        height="56px"
+                        borderRadius="16px"
+                      />
+                    </InputGroup>
+                  </FormControl>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              {loading ? 'Signing in...' : 'Sign in'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+                  <FormControl>
+                    <InputGroup>
+                      <Input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        size="lg"
+                        bg="whiteAlpha.100"
+                        border="none"
+                        color="white"
+                        _placeholder={{ color: 'whiteAlpha.500' }}
+                        _hover={{ bg: 'whiteAlpha.200' }}
+                        _focus={{ bg: 'whiteAlpha.200', boxShadow: 'none' }}
+                        height="56px"
+                        borderRadius="16px"
+                      />
+                    </InputGroup>
+                  </FormControl>
+
+                  <Button
+                    type="submit"
+                    width="100%"
+                    height="56px"
+                    isLoading={loading}
+                    loadingText="Signing in..."
+                    bg="whiteAlpha.900"
+                    color="black"
+                    _hover={{ bg: 'whiteAlpha.800' }}
+                    _active={{ bg: 'whiteAlpha.700' }}
+                    borderRadius="16px"
+                    fontSize="md"
+                    fontWeight="semibold"
+                    boxShadow="lg"
+                  >
+                    Get Started
+                  </Button>
+                </VStack>
+              </form>
+            </VStack>
+          </Box>
+        </MotionBox>
+      </Container>
+    </Box>
   );
 };
 

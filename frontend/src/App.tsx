@@ -6,11 +6,11 @@ import AppRoutes from './routes';
 import { Question } from './types';
 import { Home } from './pages/Home';
 import { Quiz } from './pages/Quiz';
+import { Generate } from './pages/Generate';
 import { startReview } from './api';
 import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const theme = extendTheme({

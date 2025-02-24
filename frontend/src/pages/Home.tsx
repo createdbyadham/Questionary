@@ -23,6 +23,13 @@ import {
   Alert,
   AlertIcon,
   AlertDescription,
+  Switch,
+  Flex,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -46,6 +53,8 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
   const [editingSetId, setEditingSetId] = useState<number | null>(null);
   const [newSetName, setNewSetName] = useState('');
   const [isStartingQuiz, setIsStartingQuiz] = useState(false);
+  const [useGenerator, setUseGenerator] = useState(false);
+  const [numQuestions, setNumQuestions] = useState<number>(10);
 
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -84,7 +93,16 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
     try {
       setUploadProgress(0);
       setUploadStatus('Starting upload...');
-      const response = await uploadQuestions(file, setName);
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('set_name', setName);
+      formData.append('model_type', useGenerator ? 'generator' : 'extractor');
+      if (useGenerator) {
+        formData.append('num_questions', numQuestions.toString());
+      }
+      
+      const response = await uploadQuestions(formData);
       
       // If it's a JSON file, we'll get questions_imported in the response
       if ('questions_imported' in response) {
@@ -399,12 +417,40 @@ export const Home: React.FC<HomeProps> = ({ onStartQuiz }) => {
                 />
               </FormControl>
 
+              <FormControl display="flex" alignItems="center" justifyContent="space-between">
+                <FormLabel mb="0" color={textColor}>Use Question Generator Model</FormLabel>
+                <Switch
+                  isChecked={useGenerator}
+                  onChange={(e) => setUseGenerator(e.target.checked)}
+                  colorScheme="blue"
+                />
+              </FormControl>
+
+              {useGenerator && (
+                <FormControl>
+                  <FormLabel color={textColor}>Number of Questions to Generate</FormLabel>
+                  <NumberInput
+                    value={numQuestions}
+                    onChange={(_, value) => setNumQuestions(value)}
+                    min={1}
+                    max={50}
+                    size="lg"
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              )}
+
               <FormControl>
-                <FormLabel color={textColor}>Upload File</FormLabel>
+                <FormLabel color={textColor}>Upload File (PDF{!useGenerator && ' or JSON'})</FormLabel>
                 <Box position="relative">
                   <Input
                     type="file"
-                    accept=".pdf, .json"
+                    accept={useGenerator ? ".pdf" : ".pdf,.json"}
                     onChange={handleFileChange}
                     height="40px"
                     padding="0"

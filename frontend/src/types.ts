@@ -2,6 +2,9 @@ export interface Question {
   id: number;
   question_text: string;
   options: string[];
+  correct_answer: string;
+  source_lecture?: string;
+  page_range?: string;
   set_id: number;
 }
 
@@ -9,6 +12,7 @@ export interface QuestionSet {
   id: number;
   name: string;
   question_count: number;
+  created_at: string;
 }
 
 export interface QuizResult {

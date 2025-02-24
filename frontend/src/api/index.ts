@@ -52,11 +52,17 @@ export const getQuestionSets = async (): Promise<QuestionSet[]> => {
   return response.data;
 };
 
-export const uploadQuestions = async (file: File) => {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('set_name', file.name.split('.')[0]); // Use filename as set name
+export const uploadQuestions = async (file: File | FormData, setName?: string) => {
+  let formData: FormData;
   
+  if (file instanceof FormData) {
+    formData = file;
+  } else {
+    formData = new FormData();
+    formData.append('file', file);
+    formData.append('set_name', setName || file.name.split('.')[0]);
+  }
+
   const response = await api.post('/api/upload-file', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
