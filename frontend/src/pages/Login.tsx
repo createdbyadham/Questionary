@@ -160,6 +160,16 @@ const Login: React.FC = () => {
                   >
                     Get Started
                   </Button>
+                  <Box display="flex" gap={1}>
+                    <Text color="whiteAlpha.600">Don't have an account?</Text>
+                    <Link
+                      color="white"
+                      onClick={() => navigate('/register')}
+                      cursor="pointer"
+                    >
+                      Sign Up
+                    </Link>
+                  </Box>
                 </VStack>
               </form>
             </VStack>
